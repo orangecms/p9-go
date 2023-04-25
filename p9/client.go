@@ -324,6 +324,7 @@ func (c *Client) sendRecv(tm message, rm message) error {
 	// For convenience, we transform these directly
 	// into errors. Handlers need not handle this case.
 	if rlerr, ok := resp.r.(*rlerror); ok {
+		fmt.Println("ERRRRRRRR")
 		return linux.Errno(rlerr.Error)
 	}
 

@@ -76,6 +76,7 @@ func HighestVersionString() string {
 //
 // )
 func parseVersion(str string) (baseVersion, uint32, bool) {
+	fmt.Printf("----- got 9p version: %v\n", str)
 	switch str {
 	case "9P2000.L":
 		return version9P2000L, 0, true

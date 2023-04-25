@@ -1706,6 +1706,28 @@ func (r *rfsync) String() string {
 	return fmt.Sprintf("Rfsync{}")
 }
 
+// nop is an empty response.
+type nop struct {
+}
+
+// decode implements encoder.decode.
+func (*nop) decode(b *buffer) {
+}
+
+// encode implements encoder.encode.
+func (*nop) encode(b *buffer) {
+}
+
+// typ implements message.typ.
+func (*nop) typ() msgType {
+	return msgTlock
+}
+
+// String implements fmt.Stringer.
+func (r *nop) String() string {
+	return fmt.Sprintf("")
+}
+
 // tstatfs is a stat request.
 type tstatfs struct {
 	// fid is the root.
@@ -2152,7 +2174,11 @@ func (r *rlock) decode(b *buffer) {
 
 // encode implements encoder.encode.
 func (r *rlock) encode(b *buffer) {
+	fmt.Printf(" ---- %v\n", r)
 	b.Write8(uint8(r.Status))
+	// EVERYHING IS OKAY
+	// r.Status = uint8(lockOK)
+	// b.Write8(r.Status)
 }
 
 // typ implements message.typ.
@@ -2290,6 +2316,10 @@ func init() {
 	msgDotLRegistry.register(msgRreaddir, func() message { return &rreaddir{} })
 	msgDotLRegistry.register(msgTfsync, func() message { return &tfsync{} })
 	msgDotLRegistry.register(msgRfsync, func() message { return &rfsync{} })
+	msgDotLRegistry.register(msgTlock, func() message { return &tlock{} })
+	msgDotLRegistry.register(msgRlock, func() message { return &rlock{} })
+	msgDotLRegistry.register(msgTgetlock, func() message { return &nop{} })
+	msgDotLRegistry.register(msgRgetlock, func() message { return &nop{} })
 	msgDotLRegistry.register(msgTlink, func() message { return &tlink{} })
 	msgDotLRegistry.register(msgRlink, func() message { return &rlink{} })
 	msgDotLRegistry.register(msgTlock, func() message { return &tlock{} })
